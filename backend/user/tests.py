@@ -7,18 +7,24 @@ from .serializers import UserSerializer
 
 class GetAllUsersTest(APITestCase):
 
-    # Setup a Client API and create a test user
     def setUp(self):
+        '''
+        Set up a Client API and create a test user.
+        '''
         self.client = APIClient()
         self.user = User.objects.create_user(username='testuser', email='testuser@test.com', password='testing')
         self.user.save()
 
-    # Login the test user created and authenticate them
     def _require_login(self):
+        '''
+        Login and authenticate the created test user.
+        '''
         self.client.login(username='testuser', password='testing')
 
-    # Test Get All Users API endpoint
     def test_get_all_users(self):
+        '''
+        Confirm that the Get All Users API endpoint is correct.
+        '''
         self._require_login()
         response = self.client.get('http://127.0.0.1:8000/users/')
         users = User.objects.all()
@@ -27,6 +33,9 @@ class GetAllUsersTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_one_user(self):
+        '''
+        Confirm that the User Instance API endpoint is correct.
+        '''
         self._require_login()
         user = User.objects.order_by('id').first()
         response = self.client.get(f'http://127.0.0.1:8000/users/{user.id}/')
