@@ -1,3 +1,35 @@
-from django.test import TestCase
+import json
+from rest_framework import status
+from rest_framework.test import APITestCase, APIClient
+from django.contrib.auth.models import User
+from .serializers import UserSerializer
 
-# Create your tests here.
+
+class GetAllUsersTest(APITestCase):
+
+    # Setup a Client API and create a test user
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username='testuser', email='testuser@test.com', password='testing')
+        self.user.save()
+
+    # Login the test user created and authenticate them
+    def _require_login(self):
+        self.client.login(username='testuser', password='testing')
+
+    # Test Get All Users API endpoint
+    def test_get_all_users(self):
+        self._require_login()
+        response = self.client.get('http://127.0.0.1:8000/users/')
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_one_user(self):
+        self._require_login()
+        user = User.objects.order_by('id').first()
+        response = self.client.get(f'http://127.0.0.1:8000/users/{user.id}/')
+        serializer = UserSerializer(user, many=False)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
