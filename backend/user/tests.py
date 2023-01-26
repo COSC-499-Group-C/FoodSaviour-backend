@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .serializers import UserSerializer
 
 
-class GetAllUsersTest(APITestCase):
+class UserTest(APITestCase):
 
     def setUp(self):
         '''
@@ -42,3 +42,26 @@ class GetAllUsersTest(APITestCase):
         serializer = UserSerializer(user, many=False)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_user(self):
+        self._require_login()
+        user = User.objects.first()
+        response = self.client.patch(f'http://127.0.0.1:8000/users/{user.id}/', {'username': 'test'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_add_user(self):
+        self._require_login()
+        request = self.client.post('http://127.0.0.1:8000/users/', {'username': 'TestUser2', 'password': 'testing123'})
+        self.assertEqual(request.status_code, status.HTTP_201_CREATED)
+
+    def test_destroy_user(self):
+        self._require_login()
+        user = User.objects.first()
+        request = self.client.delete(f'http://127.0.0.1:8000/users/{user.id}/')
+        self.assertEqual(request.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_update_user(self):
+        self._require_login()
+        user = User.objects.first()
+        request = self.client.patch(f'http://127.0.0.1:8000/users/{user.id}/', {'username': 'DummyUser'})
+        self.assertEqual(request.status_code, status.HTTP_200_OK)
