@@ -13,12 +13,11 @@ class OrgNameSerializer(serializers.ModelSerializer):
 
 
 class OrgGroupSerializer(serializers.ModelSerializer):
-    group_id = OrgNameSerializer()
 
     class Meta:
         model = OrgGroup
         fields = [
             "id",
-            "group_id",
-            "user_id"
+            "group",
+            "user"
         ]
