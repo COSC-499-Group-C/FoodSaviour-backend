@@ -14,7 +14,7 @@ class OrgNameTest(APITestCase):
         self.client = APIClient()
         self.user = User.objects.create_user('testuser', email='testuser@test.com', password='testing')
         self.user.save()
-        self.orgName = OrgName(name='Test Company 1')
+        self.orgName = OrgName(name='Test Company')
         self.orgName.save()
 
     """
@@ -42,8 +42,8 @@ class OrgNameTest(APITestCase):
 
     def test_get_one_Org(self):
         self._require_login()
-        response = self.client.get(f'https://127.0.0.1:8000/orgName/{1}')
         org = OrgName.objects.first()
+        response = self.client.get(f'https://127.0.0.1:8000/orgName/{org.id}/')
         serializer = OrgNameSerializer(org, many=False)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -55,4 +55,4 @@ class OrgNameTest(APITestCase):
     def test_add_org(self):
         self._require_login()
         response = self.client.post('https://127.0.0.1:8000/orgName/', {'name': 'test company 2'})
-        self.assertEqual(response.status, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
