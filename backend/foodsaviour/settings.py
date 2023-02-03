@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'organization',
-    'user'
+    'user',
+    'tracker'
 ]
 
 MIDDLEWARE = [
