@@ -11,6 +11,7 @@ class WasteType(models.Model):
     class Meta:
         verbose_name_plural = "Waste Types"
 
+
 def tracker_data_default():
     return {
         "data": {
@@ -21,7 +22,6 @@ def tracker_data_default():
 
 
 class TrackerData(models.Model):
-
     title = models.CharField(max_length=100)
     waste_type = models.ForeignKey(WasteType, on_delete=models.CASCADE, null=False)
     data = models.JSONField("Tracker Data", default=tracker_data_default)
