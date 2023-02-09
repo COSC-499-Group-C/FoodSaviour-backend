@@ -16,7 +16,7 @@ class WasteTypeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class TrackerDataViewSet(viewsets.ViewSet):
+class TrackerDataViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Tracker Data to be viewed or edited
     """
