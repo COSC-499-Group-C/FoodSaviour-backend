@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from django.contrib.auth.models import User
 from .models import OrgName, OrgGroup
-from .serializers import OrgNameSerializer
+from .serializers import OrgNameSerializer, OrgGroupSerializer
 
 
 class OrgNameTest(APITestCase):
@@ -16,6 +16,8 @@ class OrgNameTest(APITestCase):
         self.user.save()
         self.orgName = OrgName(name='Test Company')
         self.orgName.save()
+        self.orgGroup = OrgGroup(group_id=self.orgName.id, user_id=self.user.id)
+        self.orgGroup.save()
 
     """
     Getting User to login
@@ -56,3 +58,30 @@ class OrgNameTest(APITestCase):
         self._require_login()
         response = self.client.post('https://127.0.0.1:8000/orgName/', {'name': 'test company 2'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_update_org(self):
+        self._require_login()
+        org = OrgName.objects.first()
+        response = self.client.patch(f'https://127.0.0.1/orgName/{org.id}/', {'name': 'Test Company 1'})
+        self.assertEqual(response.data, OrgNameSerializer(OrgName.objects.first()).data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_destroy_org(self):
+        self._require_login()
+        org = OrgName.objects.first()
+        response = self.client.delete(f'https://127.0.0.1/orgName/{org.id}/')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_get_all_orgGroup(self):
+        self._require_login()
+        orgGroup = OrgGroup.objects.all()
+        response = self.client.get('https://127.0.0.1/orgGroup/')
+        self.assertEqual(response.data, OrgGroupSerializer(orgGroup, many=True).data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_one_orgGroup(self):
+        self._require_login()
+        orgGroup = OrgGroup.objects.first()
+        response = self.client.get(f'https://127.0.0.1/orgGroup/{orgGroup.id}/')
+        self.assertEqual(response.data, OrgGroupSerializer(orgGroup, many=False).data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
