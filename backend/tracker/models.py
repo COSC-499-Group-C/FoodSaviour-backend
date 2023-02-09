@@ -22,7 +22,7 @@ def tracker_data_default():
 
 
 class TrackerData(models.Model):
-    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=500, default="Description")
     waste_type = models.ForeignKey(WasteType, on_delete=models.CASCADE, null=False)
     data = models.JSONField("Tracker Data", default=tracker_data_default)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)

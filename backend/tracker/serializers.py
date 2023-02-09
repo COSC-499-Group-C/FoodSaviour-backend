@@ -17,7 +17,7 @@ class TrackerDataSerializer(serializers.ModelSerializer):
         model = TrackerData
         fields = [
             "id",
-            "title",
+            "description",
             "data",
             "waste_type",
             "user"
