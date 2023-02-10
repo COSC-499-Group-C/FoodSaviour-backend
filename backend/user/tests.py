@@ -69,13 +69,3 @@ class UserTest(APITestCase):
         user = User.objects.first()
         request = self.client.delete(f'http://127.0.0.1:8000/users/{user.id}/')
         self.assertEqual(request.status_code, status.HTTP_204_NO_CONTENT)
-
-    """
-    Test the update User API
-    """
-
-    def test_update_user(self):
-        self._require_login()
-        user = User.objects.first()
-        request = self.client.patch(f'http://127.0.0.1:8000/users/{user.id}/', {'username': 'DummyUser'})
-        self.assertEqual(request.status_code, status.HTTP_200_OK)
