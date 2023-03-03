@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from user.models import NewUser
 
 
 class OrgName(models.Model):
@@ -13,7 +13,7 @@ class OrgName(models.Model):
 
 
 class OrgGroup(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     group = models.ForeignKey(OrgName, on_delete=models.CASCADE)
 
     class Meta:

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from user.models import NewUser
 
 
 class WasteType(models.Model):
@@ -25,7 +25,7 @@ class TrackerData(models.Model):
     description = models.CharField(max_length=500, default="Description")
     waste_type = models.ForeignKey(WasteType, on_delete=models.CASCADE, null=False)
     data = models.JSONField("Tracker Data", default=tracker_data_default)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return self.title
