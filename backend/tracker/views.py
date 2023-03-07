@@ -1,5 +1,6 @@
 from .models import WasteType, TrackerData
 from .serializers import WasteTypeSerializer, TrackerDataSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -20,7 +21,7 @@ class TrackerDataViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Tracker Data to be viewed or edited
     """
-    authentication_classes = [SessionAuthentication, ]
+    authentication_classes = [JWTAuthentication, SessionAuthentication, ]
     queryset = TrackerData.objects.all()
     serializer_class = TrackerDataSerializer
     permission_classes = [permissions.IsAuthenticated]
