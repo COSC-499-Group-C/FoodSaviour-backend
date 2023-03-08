@@ -11,7 +11,7 @@ class WasteTypeViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Waste Type to be viewed or edited.
     """
-    authentication_classes = [SessionAuthentication, ]
+    authentication_classes = [JWTAuthentication, SessionAuthentication, ]
     queryset = WasteType.objects.all()
     serializer_class = WasteTypeSerializer
     permission_classes = [permissions.IsAuthenticated]

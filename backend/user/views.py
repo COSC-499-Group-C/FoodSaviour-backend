@@ -2,6 +2,7 @@ from .models import NewUser
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.authentication import SessionAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .serializers import UserSerializer, CustomUserSerializer
 
@@ -15,7 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    authentication_classes = [SessionAuthentication, ]
+    authentication_classes = [JWTAuthentication, SessionAuthentication, ]
     queryset = NewUser.objects.all().order_by('id')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsAuthenticatedOrReadOnly]
