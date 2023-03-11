@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'user',
     'tracker',
     'rest_framework_simplejwt.token_blacklist',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
