@@ -25,3 +25,7 @@ class TrackerDataViewSet(viewsets.ModelViewSet):
     queryset = TrackerData.objects.all()
     serializer_class = TrackerDataSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return TrackerData.objects.filter(user_id=user.id).order_by('-created_at')

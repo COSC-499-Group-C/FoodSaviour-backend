@@ -18,7 +18,14 @@ class TrackerDataSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "description",
-            "data",
             "waste_type",
+            "donations",
+            "compost",
+            "partners",
+            "farmers",
+            "gardens",
+            "landfill",
+            "other",
+            "created_at",
             "user"
         ]
