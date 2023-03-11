@@ -5,6 +5,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.authentication import SessionAuthentication
+from django_filters import rest_framework as filters
 
 
 class WasteTypeViewSet(viewsets.ModelViewSet):
@@ -25,7 +26,9 @@ class TrackerDataViewSet(viewsets.ModelViewSet):
     queryset = TrackerData.objects.all()
     serializer_class = TrackerDataSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_fields = ('waste_type',)
 
     def get_queryset(self):
         user = self.request.user
-        return TrackerData.objects.filter(user_id=user.id).order_by('-created_at')
+        return self.queryset.filter(user_id=user.id).order_by('-created_at')
