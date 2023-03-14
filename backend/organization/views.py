@@ -14,7 +14,7 @@ class OrgNameViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication, ]
     queryset = OrgName.objects.all()
     serializer_class = OrgNameSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 class OrgGroupViewSet(viewsets.ModelViewSet):
@@ -24,4 +24,4 @@ class OrgGroupViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication, ]
     queryset = OrgGroup.objects.all()
     serializer_class = OrgGroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
