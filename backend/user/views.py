@@ -21,6 +21,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated, permissions.IsAuthenticatedOrReadOnly]
 
+    def get_queryset(self):
+        return NewUser.objects.filter(pk=self.request.user.id)
+
 
 class CustomUserCreate(viewsets.ViewSet):
     permission_classes = [AllowAny]
