@@ -42,7 +42,7 @@ class CustomTrackerData(viewsets.ViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication, ]
     permission_classes = [permissions.IsAuthenticated]
 
-    def list(self):
+    def list(self, request):
         waste_ids = self.request.query_params.getlist('waste_type')
         org_ids = self.request.query_params.getlist('group')
         role_ids = self.request.query_params.getlist('role')
