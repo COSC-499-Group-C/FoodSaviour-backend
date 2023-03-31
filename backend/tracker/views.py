@@ -50,26 +50,47 @@ class CustomTrackerData(viewsets.ViewSet):
         role_data = RoleGroup.objects.filter(group__id__in=role_ids)
         org_data = OrgGroup.objects.filter(group__id__in=org_ids)
 
-        user_list = []
-        for org in org_data:
-            user_list.append(org.user.id)
-
-        for role in role_data:
-            if role.user.id not in user_list:
-                user_list.append(role.user.id)
-
-        if not waste_ids and not org_ids and not role_ids:
-            return Response([])
-        elif user_list:
-            if waste_ids and user_list:
-                tracker_data = TrackerData.objects.filter(user__id__in=user_list, waste_type__id__in=waste_ids)
-            elif not waste_ids:
-                tracker_data = TrackerData.objects.filter(user__id__in=user_list)
+        if not org_ids and not role_ids:
+            if not waste_ids:
+                return Response([])
             else:
                 tracker_data = TrackerData.objects.filter(waste_type__id__in=waste_ids)
 
-            serialized = TrackerDataSerializer(tracker_data, many=True)
-            return Response(serialized.data)
-
+                serialized = TrackerDataSerializer(tracker_data, many=True)
+                return Response(serialized.data)
         else:
-            return Response([])
+            if org_ids:
+                org_data_exists = False
+            else:
+                org_data_exists = True
+
+            if role_ids:
+                role_data_exists = False
+            else:
+                role_data_exists = True
+
+            user_list = []
+
+            for org in org_data:
+                if org.user.id not in user_list:
+                    org_data_exists = True
+                    user_list.append(org.user.id)
+
+            for role in role_data:
+                if role.user.id not in user_list:
+                    role_data_exists = True
+                    user_list.append(role.user.id)
+
+            if org_data_exists and role_data_exists:
+                if waste_ids and user_list:
+                    tracker_data = TrackerData.objects.filter(user__id__in=user_list, waste_type__id__in=waste_ids)
+                elif not waste_ids:
+                    tracker_data = TrackerData.objects.filter(user__id__in=user_list)
+                else:
+                    tracker_data = TrackerData.objects.filter(waste_type__id__in=waste_ids)
+
+                serialized = TrackerDataSerializer(tracker_data, many=True)
+                return Response(serialized.data)
+
+            else:
+                return Response([])
