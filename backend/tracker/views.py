@@ -60,13 +60,16 @@ class CustomTrackerData(viewsets.ViewSet):
 
         if not waste_ids and not org_ids and not role_ids:
             return Response([])
-        else:
+        elif user_list:
             if waste_ids and user_list:
                 tracker_data = TrackerData.objects.filter(user__id__in=user_list, waste_type__id__in=waste_ids)
             elif not waste_ids:
                 tracker_data = TrackerData.objects.filter(user__id__in=user_list)
-            elif not user_list:
+            else:
                 tracker_data = TrackerData.objects.filter(waste_type__id__in=waste_ids)
 
             serialized = TrackerDataSerializer(tracker_data, many=True)
             return Response(serialized.data)
+
+        else:
+            return Response([])
